@@ -1,0 +1,69 @@
+{% extends 'base.html'%}
+{% load static %}
+{% block content %}
+
+<script src="{% static '/js/preloader.js'%}"></script>
+  <div class="body-wrapper">
+    <!-- partial:../../partials/_sidebar.html -->
+    <header class="mdc-top-app-bar">
+      <div class="mdc-top-app-bar__row">
+        <div class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
+          <button class="material-icons mdc-top-app-bar__navigation-icon mdc-icon-button sidebar-toggler">menu</button>
+          <span class="mdc-top-app-bar__title">Gestion des employes</span>
+          <div class="mdc-text-field mdc-text-field--outlined mdc-text-field--with-leading-icon search-text-field d-none d-md-flex">
+            <i class="material-icons mdc-text-field__icon">search</i>
+            <input class="mdc-text-field__input" id="text-field-hero-input">
+            <div class="mdc-notched-outline">
+              <div class="mdc-notched-outline__leading"></div>
+              <div class="mdc-notched-outline__notch">
+                <label for="text-field-hero-input" class="mdc-floating-label">Search..</label>
+              </div>
+              <div class="mdc-notched-outline__trailing"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+  
+  
+    
+  <!-- SCRIPTS TABS-->
+
+  <script>
+    function openCity(evt, cityName) {
+      var i, tabcontent, tablinks;
+      tabcontent = document.getElementsByClassName("tabcontent");
+      for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+      }
+      tablinks = document.getElementsByClassName("tablinks");
+      for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+      }
+      document.getElementById(cityName).style.display = "block";
+      evt.currentTarget.className += " active";
+    }
+    
+    // Get the element with id="defaultOpen" and click on it
+    document.getElementById("defaultOpen").click();
+    </script>
+  <!-- END SCRIPTS TABS-->
+  <!-- plugins:js -->
+  <script src="{% static '/vendors/js/vendor.bundle.base.js'%}"></script>
+  <!-- endinject -->
+  <!-- Plugin js for this page-->
+  <script src="{% static '/vendors/chartjs/Chart.min.js'%}"></script>
+  <script src="{% static '/vendors/jvectormap/jquery-jvectormap.min.js'%}"></script>
+  <script src="{% static '/vendors/jvectormap/jquery-jvectormap-world-mill-en.js'%}"></script>
+  <!-- End plugin js for this page-->
+  <!-- inject:js -->
+  <script src="{% static '/js/material.js'%}"></script>
+  <script src="{% static '/js/misc.js'%}"></script>
+  <!-- endinject -->
+  <!-- Custom js for this page-->
+  <script src="{% static '/js/dashboard.js'%}"></script>
+  <!-- End custom js for this page-->
+
+</body>
+</html> 
+{%endblock%}

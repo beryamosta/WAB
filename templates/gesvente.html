@@ -1,0 +1,549 @@
+{% extends 'base.html'%}
+{% load static %}
+{% block content %}
+
+<script src="{% static '/js/preloader.js'%}"></script>
+  <div class="body-wrapper">
+    <!-- partial:../../partials/_sidebar.html -->
+    <header class="mdc-top-app-bar">
+      <div class="mdc-top-app-bar__row">
+        <div class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
+          <button class="material-icons mdc-top-app-bar__navigation-icon mdc-icon-button sidebar-toggler">menu</button>
+          <span class="mdc-top-app-bar__title">Gestion de vente</span>
+          <div class="mdc-text-field mdc-text-field--outlined mdc-text-field--with-leading-icon search-text-field d-none d-md-flex">
+            <i class="material-icons mdc-text-field__icon">search</i>
+            <input class="mdc-text-field__input" id="text-field-hero-input">
+            <div class="mdc-notched-outline">
+              <div class="mdc-notched-outline__leading"></div>
+              <div class="mdc-notched-outline__notch">
+                <label for="text-field-hero-input" class="mdc-floating-label">Search..</label>
+              </div>
+              <div class="mdc-notched-outline__trailing"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+  
+  
+    
+      <div class="page-wrapper mdc-toolbar-fixed-adjust">
+        
+        <main class="content-wrapper">
+          <!-- CONTENT ########################################################################### -->
+         
+          <!--  ##################### SECTION FOURNISSEUR ######################-->
+
+          
+          <form method="post" id="subform" novalidate>
+            {% csrf_token %}
+             <!-- <div class="mdc-layout-grid">-->
+            <div style="background-color: white;padding-left: 7px; height:50px;">
+              <div style=" position:relative;height:100%; ">
+
+                <button class="mdc-button mdc-button--unelevated filled-button--success mdc-ripple-upgraded" style="position: relative; top: 50%; transform: translateY(-50%);margin-left: 5px;margin-right: 5px; " id="VNTSAVE" name="VNTSAVE" onclick="check_client()" type="button">
+                  <i class="material-icons mdc-button__icon">save</i>
+                  
+                  <span class="mdc-button__label">Enregistrer</span>
+                </button>
+                <span id="submitError"></span>
+
+                
+                               
+                <button class="mdc-button mdc-button--outlined outlined-button--dark mdc-ripple-upgraded" style="position: relative; top: 50%; transform: translateY(-50%);margin-left: 5px;margin-right: 5px; float: right;" id="VNTRESET" name="VNTRESET" >
+                  <i class="material-icons mdc-button__icon">backspace</i>
+                  <span class="mdc-button__label">Renitialiser</span>
+                </button>
+              <button class="mdc-button mdc-button--raised mdc-ripple-upgraded" style="position: relative; top: 50%; transform: translateY(-50%);margin-left: 5px;margin-right: 5px;float: right;" id="VNTADD" name="VNTADD" onclick="check_add_btn(); ADD_ART_TO_ROW();" type="button"><!--; ADD_ART_TO_ROW();-->
+                <i class="material-icons mdc-button__icon">add</i>
+                <span class="mdc-button__label">Ajouter (F2) </span>
+              </button>
+              
+              
+            </div>
+            </div>
+            <!--</div>  -->
+            
+
+            <div class="mdc-layout-grid">
+              <div class="mdc-layout-grid__inner">
+                <div class="mdc-layout-grid__cell--span-4 mdc-layout-grid__cell--span-6-desktop stretch-card">
+                  <div class="mdc-card">
+                    <div style="margin-top: 10px;margin-bottom: 10px;" >
+                      <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-6-desktop">
+                        <div class="mdc-text-field">
+                          <input class="mdc-text-field__input" id="VNT_ENT_ID" name="VNT_ENT_ID" Disabled value="{{refiden}}">
+                          <div class="mdc-line-ripple"></div>
+                          <label for="text-field-hero-input" class="mdc-floating-label">ID</label>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div style="margin-top: 10px;margin-bottom: 10px;" > 
+                      <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-6-desktop">
+                        <div class="mdc-text-field">
+                          <input class="mdc-text-field__input" id="VNT_ENT_NDOC" name="VNT_ENT_NDOC" readonly value="{{refidencode}}">
+                          <div class="mdc-line-ripple"></div>
+                          <label for="text-field-hero-input" class="mdc-floating-label">N° DOCUMENT</label>
+                        </div>
+                      </div>
+                    </div> 
+
+                    <div style="margin-top: 10px;margin-bottom: 10px;">  
+                      <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-6-desktop">
+                        <div class="mdc-text-field">
+                          <input class="mdc-text-field__input" id="VNT_ENT_DATE" name="VNT_ENT_DATE" type="date">
+                          <div class="mdc-line-ripple"></div>
+                          <label for="text-field-hero-input" class="mdc-floating-label">DATE</label>
+                        </div>
+                      </div>
+                    </div> 
+                    <div style="display:table">
+                      <div class="dropdown" style="display:table-cell;vertical-align: middle;">          
+                        <select class="dropdown-select" name="comboClient" id="VNT_ENT_Client" onkeyup="validateClient" >
+                          <option selected disabled value="">choose</option>
+                          {% for Client in comboClient %}
+                          <option value="{{Client.CL_NOM}}" >{{Client.CL_NOM}}</option>
+                          {% endfor%}
+                        </select>
+                        <span id="span_Client" style="color: red;"  ></span>
+                      </div>
+                      
+                    </div>
+                    
+
+                  </div>
+                </div>
+                  <!--  ##################### SECTION ARTICLES ######################-->
+                <div class="mdc-layout-grid__cell--span-4 mdc-layout-grid__cell--span-6-desktop stretch-card">
+                  <div class="mdc-card">
+
+
+                    <div style="margin-top: 10px;margin-bottom: 10px;">  
+                      <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-6-desktop">
+                        <div class="mdc-text-field">
+                          <input class="mdc-text-field__input" id="VNT_ID_AR" name="VNT_ID_AR">
+                          <div class="mdc-line-ripple"></div>
+                          <label for="text-field-hero-input" class="mdc-floating-label">Réference</label>
+                        </div>
+                      </div>
+                      <span id="span_ref" style="color: red;"></span>
+                    </div> 
+
+                    <div style="margin-top: 10px;margin-bottom: 10px;">  
+                      <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-6-desktop">
+                        <div class="mdc-text-field">
+                          <!--<input class="mdc-text-field__input" id="VNT_DES_AR"list="DES_LIST" name="VNT_DES_AR">-->
+                          <input class="mdc-text-field__input" id="VNT_DES_AR1" name="VNT_DES_AR1" list="DES_LIST">
+                          <div class="mdc-line-ripple"></div>
+                          <label for="text-field-hero-input" class="mdc-floating-label">Désignation</label>
+                           <!--GETTING THE LIST OF ARTICLE THAT EXIST IN ARTICLE DATATABLE-->
+                          <datalist id="DES_LIST">
+                           
+                            {% for Article in articleautocomplete %}
+                            <option id="googletest" value="{{Article.AR_DESIGNATION}}" data-iden="{{Article.AR_ID}}" data-stock="{{Article.AR_STOCK_REEL}}" data-pu="{{Article.AR_PU_DEF}}"></option>
+                            {% endfor%}
+                          </datalist>
+                          
+                        </div>
+                      </div>
+                      <span id="span_des" style="color: red;"></span>
+                    </div>
+                    
+                    <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-4 " >
+                      <div  style="margin-top: 10px;margin-bottom: 10px; margin-right: 5px;">  
+                        <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-6-desktop">
+                          <div class="mdc-text-field">
+                            <input class="mdc-text-field__input" id="VNT_QTY_AR" name="VNT_QTY_AR" value="1" type="number">
+                            <div class="mdc-line-ripple"></div>
+                            <label for="text-field-hero-input" class="mdc-floating-label" id="VNT_QTY_AR_LBL">Quantité</label>
+                          </div>
+                        </div>
+                        <span id="span_qty" style="color: red;"></span>
+                      </div>
+
+                      <div style="margin-top: 10px;margin-bottom: 10px;margin-right: 5px;">  
+                        <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-6-desktop">
+                          <div class="mdc-text-field">
+                            <input class="mdc-text-field__input" id="VNT_PU_AR" name="VNT_PU_AR" value=" " onkeydown="calculate()" type="number">
+                            <div class="mdc-line-ripple"></div>
+                            <label for="text-field-hero-input" class="mdc-floating-label" id="VNT_PU_AR_LBL">Prix Unitaire</label>
+                          </div>
+                        </div>
+                      </div>
+                      <span id="span_pu" style="color: red;"></span>
+                    </div>
+                    <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-4 " >
+                      <div style="margin-top: 10px;margin-bottom: 10px;margin-right: 5px;">  
+                        <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-6-desktop">
+                          <div class="mdc-text-field">
+                            <input class="mdc-text-field__input" id="VNT_REM_AR" name="VNT_REM_AR" onkeydown="calculate()" value="0" type="number">
+                            <div class="mdc-line-ripple"></div>
+                            <label for="text-field-hero-input" class="mdc-floating-label" >Remise %</label>
+                          </div>
+                        </div>
+                        <span id="span_rem" style="color: red;"></span>
+                      </div>
+
+                      <div style="margin-top: 10px;margin-bottom: 10px;margin-right: 5px;">  
+                        <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-6-desktop">
+                          <div class="mdc-text-field">
+                            <input class="mdc-text-field__input" id="VNT_TOT_AR" value=" " readonly>
+                            <div class="mdc-line-ripple"></div>
+                            <label for="text-field-hero-input" class="mdc-floating-label" >TOTAL</label>
+                          </div>
+                        </div>
+                      </div>
+                      
+                    </div>
+                    <span id="span_add" style="color: red;"> </span>
+                    
+                    <!--<p id="pid">yazid</p>-->
+
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </form>  
+          <!--  ##################### SECTION TABLE ######################-->
+
+          <div class="mdc-layout-grid">
+            <div class="mdc-layout-grid__inner">
+              <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-12 ">
+                <div class="mdc-card p-0">
+                  <div class="table-responsive">
+                    <table class="table table-hoverable" id="VNT_TAB_DATA">
+                      <thead>
+                        <tr>
+                           
+                          <th class="text-left">Ref</th>
+                          <th class="text-left">Désignation</th>
+                          <th class="text-left">Quantité</th>
+                          <th class="text-left">Prix Unitaire</th>
+                          <th class="text-left">Remise %</th>
+                          <th class="text-left">TOTAL</th>
+                          <th class="text-left">Action</th>
+                                                 </tr>
+                      </thead>
+                      <tbody>
+                        
+                        {% if d %}
+                        {% for i in d %}
+                        
+                        <tr>
+                          <td name="reftableauarticle" class="text-left">{{i.REF}}</td>
+                          <td class="text-left">{{i.DESIGNATION}}</td>
+                          <td class="text-left">{{i.QTY}}</td>
+                          <td class="text-left">{{i.PU}}</td>
+                          <td class="text-left">{{i.REMISE}}</td>
+                          <td class="text-left">{{i.TOTAL}}</td> 
+                          <td class="text-left">
+                            <form action="/dashboard/deleteVLigne/{{i.ID}}">
+                              <button class="mdc-button mdc-button--raised icon-button filled-button--secondary" name="btn_supp">
+                                <i class="material-icons mdc-button__icon">delete</i>
+                              </button>
+                            </form>
+                          </td>
+                          <!--                    
+                          <td class="text-left">
+                            <button class="mdc-button mdc-button--raised icon-button filled-button--secondary" id="btn_supp" name="btn_supp">
+                              <i class="material-icons mdc-button__icon">delete</i>
+                            </button>
+                            <input type="" value="{{i.ID}}" name="delete_btn" id="delete_btn"> 
+                          </td> 
+                          -->
+                        </tr>
+                        {% endfor %}
+                        {% endif %}
+                      
+                        
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </main>
+        <!-- partial:../../partials/_footer.html -->
+        
+        <!-- partial -->
+      </div>
+    </div>
+  </div>
+  <!-- call datatable-->
+  <script>
+    let table = new DataTable('#testvente', {
+    // options
+});
+ </script>
+  <!-- END call datatable-->
+
+<!-- ###   show alert message-->
+<script>
+  function Confirm() {
+      if (confirm(' OOPS, vous allez perdre tous vos données...')) {
+    // Save it!
+    console.log('Thing was saved to the database.');
+  } else {
+    // Do nothing!
+    console.log('Thing was not saved to the database.');
+  }
+  }
+  </script>
+<!-- ###   END show alert message-->
+  
+  <!-- plugins:js -->
+  <script src="{% static '/vendors/js/vendor.bundle.base.js'%}"></script>
+  <!-- endinject -->
+
+  <!-- Plugin js for this page-->
+  <script src="{% static '/vendors/chartjs/Chart.min.js'%}"></script>
+  <script src="{% static '/vendors/jvectormap/jquery-jvectormap.min.js'%}"></script>
+  <script src="{% static '/vendors/jvectormap/jquery-jvectormap-world-mill-en.js'%}"></script>
+  <!-- End plugin js for this page-->
+  
+  <!-- inject:js -->
+  <script src="{% static '/js/material.js'%}"></script>
+  <script src="{% static '/js/misc.js'%}"></script>
+  <!-- endinject -->
+  
+  <!-- Custom js for this page-->
+  <script src="{% static '/js/dashboard.js'%}"></script>
+  <!-- End custom js for this page-->    
+  
+    <script type="text/javascript">
+      $('#VNT_PU_AR').keyup(function(e) {
+        if(e.keyCode == 9){
+          calculate();
+          displaydes();
+         
+        }
+        if(e.keyCode == 113){
+          ADD_ART_TO_ROW();
+        }
+      });
+      $('#VNT_QTY_AR').keyup(function(e) {
+        if(e.keyCode == 9){
+          calculate(); 
+          displaydes(); 
+        }
+        if(e.keyCode == 113){
+          ADD_ART_TO_ROW();
+        }
+      });
+      $('#VNT_DES_AR1').keyup(function(e) {
+        if(e.keyCode == 9){
+          
+          calculate();
+          displaydes();
+        }
+        if(e.keyCode == 113){
+          ADD_ART_TO_ROW();
+        }
+      });
+      $('#VNT_TOT_AR').keyup(function(e) {
+        
+        if(e.keyCode == 113){
+          ADD_ART_TO_ROW();
+        }
+      });
+     
+    </script>
+   <!-- CALCULATE TOTAL FIELD-->   
+    <script>
+      function calculate(){
+        var pu = document.getElementById('VNT_PU_AR').value;
+        var qte = document.getElementById('VNT_QTY_AR').value;
+        var remi = document.getElementById('VNT_REM_AR').value;
+        document.getElementById('VNT_TOT_AR').value= Number(pu)*Number(qte)-(Number(pu)*Number(qte)*Number(remi)/100);
+      }
+      
+    </script>
+    <!-- END CALCULATE TOTAL FIELD-->
+    <!-- DATE DEFAULT TODAY-->
+    <script>
+     document.getElementById('VNT_ENT_DATE').value = new Date().toISOString().substring(0, 10);
+
+    </script>
+     <!-- END DATE DEFAULT TODAY--> 
+     <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+     <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script> 
+     <script>
+       $('#VNT_DES_AR1').keypress(function (e) {                                       
+       if (e.which == 13) {
+            e.preventDefault();
+            
+            //do something   
+       }
+});
+     </script>
+     <!-- display designation info on other fields-->
+    
+     <script>
+        function displaydes(){
+          var val= $('#VNT_DES_AR1').val()
+          var stock = $('#DES_LIST option').filter(function(){
+            return this.value== val;
+          }).data('stock');
+          var pu = $('#DES_LIST option').filter(function(){
+            return this.value== val;
+          }).data('pu');
+          var ident = $('#DES_LIST option').filter(function(){
+            return this.value== val;
+          }).data('iden');
+         // var msg = stock ? 'stock  '+stock : 'NO MATCH';
+          document.getElementById('VNT_ID_AR').value= ident;
+          document.getElementById('VNT_QTY_AR_LBL').innerHTML = stock; 
+          document.getElementById('VNT_PU_AR_LBL').innerHTML = 'Prix Unitaire : ('+pu+')'; 
+          document.getElementById('VNT_PU_AR').value = pu;
+
+       }
+     </script>
+  <!-- END display designation info on other fields-->
+
+  <!-- DISPLAY ARTICLE ON TABLE-->
+  <script>
+    function ADD_ART_TO_ROW(){
+      var tab_ref = document.getElementById("VNT_ID_AR").value;
+      var tab_des = document.getElementById("VNT_DES_AR").value;
+      var tab_qty = document.getElementById("VNT_QTY_AR").value;
+      var tab_pu = document.getElementById("VNT_PU_AR").value;
+      var tab_rem = document.getElementById("VNT_REM_AR").value;
+      var tab_tot = document.getElementById("VNT_TOT_AR").value;
+
+      TR = document.createElement("tr");
+
+      TD1  = document.createElement("td");
+      TXT1 = document.createTextNode(tab_ref);
+      
+      TD1.appendChild(TXT1);
+      TR.appendChild(TD1);
+
+      TD2  = document.createElement("td");
+      TXT2 = document.createTextNode(tab_des);
+      TD2.appendChild(TXT2);
+      TR.appendChild(TD2);
+
+      TD3  = document.createElement("td");
+      TXT3 = document.createTextNode(tab_qty);
+      TD3.appendChild(TXT3);
+      TR.appendChild(TD3);
+
+      TD4  = document.createElement("td");
+      TXT4 = document.createTextNode(tab_pu);
+      TD4.appendChild(TXT4);
+      TR.appendChild(TD4);
+
+      TD5  = document.createElement("td");
+      TXT5 = document.createTextNode(tab_rem);
+      TD5.appendChild(TXT5);
+      TR.appendChild(TD5);
+
+      TD6  = document.createElement("td");
+      TXT6 = document.createTextNode(tab_tot);
+      TD6.appendChild(TXT6);
+      TR.appendChild(TD6);
+      TD1.setAttribute("class", "text-left");
+      TD1.setAttribute("style", "margin-left:5px;");
+      TD2.setAttribute("class", "text-left");
+      TD3.setAttribute("class", "text-left");
+      TD4.setAttribute("class", "text-left");
+      TD5.setAttribute("class", "text-left");
+      TD6.setAttribute("class", "text-left");
+
+      document.getElementById('VNT_TAB_DATA').appendChild(TR);
+
+      document.getElementById("VNT_ID_AR").value = "";
+      document.getElementById("VNT_DES_AR").value = "";
+      document.getElementById("VNT_QTY_AR").value = "";
+      document.getElementById("VNT_PU_AR").value = "";
+      document.getElementById("VNT_REM_AR").value = "";
+      document.getElementById("VNT_TOT_AR").value = "";
+
+      document.getElementById('VNT_QTY_AR_LBL').innerHTML = 'Quantité';
+      document.getElementById('VNT_PU_AR_LBL').innerHTML = 'Prix unitaire';
+      document.getElementById("VNT_DES_AR").focus();
+
+
+    }
+  </script>
+  <!-- END DISPLAY ARTICLE ON TABLE-->
+
+  <!-- get id value from table to delete the row-->
+  <script>
+    function ADD_ART_TO_ROW(){
+      // table id : VNT_TAB_DATA
+      // delete id : delete_btn
+      var table = document.getElementById('VNT_TAB_DATA')
+      var dell = document.getElementById('delete_btn').value
+
+      for (var r = 0, n = table.rows.length; r < n; r++) {
+        table.rows[r].deleteCell(0);//var table handle 
+      }
+      
+    }
+
+  </script>
+  <!-- END get id value from table to delete the row-->
+   
+  <!-- CHECK VALIDATION FORM FOURNISSEUR-->
+  <script>
+    function check_client(){
+      var ddl = document.getElementById("VNT_ENT_Client");
+      var selectedValue = ddl.options[ddl.selectedIndex].value;
+      if (selectedValue == "")
+      {
+        document.getElementById("span_Client").innerHTML='champ obligatoire';
+        //("Please select a client type");
+      }else{
+        document.getElementById("VNTSAVE").type = "submit"
+      }
+
+    }
+  </script>
+  
+  <!-- END CHECK VALIDATION FORM FOURNISSEUR -->
+  <!-- CHECK VALIDATION FORM FOR ADD BUTTON-->
+  <script>
+  function check_add_btn(){
+      var ddl_id = document.getElementById("VNT_ID_AR").value;
+      var ddl_pu = document.getElementById("VNT_PU_AR").value;
+      var ddl_rem = document.getElementById("VNT_REM_AR").value;
+      var ddl_tot = document.getElementById("VNT_TOT_AR").value;
+      //var selectedValue = ddl.options[ddl.selectedIndex].value;
+      if (ddl_pu == " " )//|| ddl_id=="" || ddl_rem=="" || ddl_tot==" " 
+      {
+        document.getElementById("span_add").innerHTML='champ obligatoire';
+        //("Please select a client type");
+      }
+      else if (ddl_id=="undefined"){
+        document.getElementById("span_add").innerHTML='Article n_existe pas !';
+       
+      }
+      else{
+        //document.getElementById("span_add").innerHTML='VALIDE';
+       
+         document.getElementById("VNTADD").type = "submit"
+      }
+
+    }  
+  </script>
+  <!-- END CHECK VALIDATION FORM FOR ADD BUTTON-->
+
+
+  <!-- STOP RELOAD ON SUBMIT BUTTON
+  <script>
+    var form = document.getElementById("subform");
+    function handleForm(event) { event.preventDefault(); } 
+    form.addEventListener('submit', handleForm);
+  </script>-->
+  <!-- END STOP RELOAD ON SUBMIT BUTTON-->
+  
+
+  
+</body>
+</html> 
+{%endblock%}

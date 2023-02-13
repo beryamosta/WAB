@@ -1,0 +1,101 @@
+{% load static %}
+ <!-- partial:partials/_sidebar.html -->
+<aside class="mdc-drawer mdc-drawer--dismissible mdc-drawer--open">
+    <div class="mdc-drawer__header">
+      <a href="/dashboard/" class="brand-logo">
+        <img src="{% static '/images/logo.png'%}" alt="logo">
+      </a>
+    </div>
+    <div class="mdc-drawer__content">
+      <div class="user-info">
+        <p class="name">Yazid BERRACHED</p>
+      </div>
+      <div class="mdc-list-group">
+        <nav class="mdc-list mdc-drawer-menu">
+          <div class="mdc-list-item mdc-drawer-item">
+            <a class="mdc-drawer-link" href="/dashboard/">
+              <i class="material-icons mdc-list-item__start-detail mdc-drawer-item-icon" aria-hidden="true">dashboard</i>
+              Dashboard
+            </a>
+          </div>
+          <div class="mdc-list-item mdc-drawer-item">
+            <a class="mdc-drawer-link" href="/dashboard/gesfrais/">
+              <i class="material-icons mdc-list-item__start-detail mdc-drawer-item-icon" aria-hidden="true">attach_money</i>
+              Gestion de frais
+            </a>
+          </div>
+          <div class="mdc-list-item mdc-drawer-item">
+            <a class="mdc-drawer-link" href="/dashboard/gesachat/">
+              <i class="material-icons mdc-list-item__start-detail mdc-drawer-item-icon" aria-hidden="true">shopping_cart</i>
+              Gestion de achat
+            </a>
+          </div>
+          <div class="mdc-list-item mdc-drawer-item">
+            <a class="mdc-drawer-link" href="/dashboard/gesvente/">
+              <i class="material-icons mdc-list-item__start-detail mdc-drawer-item-icon" aria-hidden="true">trending_up</i>
+              Gestion de vente
+            </a>
+          </div>
+          <div class="mdc-list-item mdc-drawer-item">
+            <a class="mdc-drawer-link" href="/dashboard/gesprod/">
+              <i class="material-icons mdc-list-item__start-detail mdc-drawer-item-icon" aria-hidden="true">build</i>
+              Gestion de production
+            </a>
+          </div>
+          <div class="mdc-list-item mdc-drawer-item">
+            <a class="mdc-drawer-link" href="/dashboard/gesarticle/">
+              <i class="material-icons mdc-list-item__start-detail mdc-drawer-item-icon" aria-hidden="true">assignment</i>
+              Gesion des articles
+            </a>
+          </div>
+          <div class="mdc-list-item mdc-drawer-item">
+            <a class="mdc-drawer-link" href="/dashboard/gesemp/">
+              <i class="material-icons mdc-list-item__start-detail mdc-drawer-item-icon" aria-hidden="true">face</i>
+              Gesion des employés
+            </a>
+          </div>
+          <div class="mdc-list-item mdc-drawer-item">
+            <a class="mdc-expansion-panel-link" href="#" data-toggle="expansionPanel" data-target="sample-page-submenu">
+              <i class="material-icons mdc-list-item__start-detail mdc-drawer-item-icon" aria-hidden="true">note_add</i>
+              Autre
+              <i class="mdc-drawer-arrow material-icons">chevron_right</i>
+            </a>
+            <div class="mdc-expansion-panel" id="sample-page-submenu">
+              <nav class="mdc-list mdc-drawer-submenu">
+                <div class="mdc-list-item mdc-drawer-item">
+                  <a class="mdc-drawer-link" href="/dashboard/gesfourn/">
+                    fournisseurs
+                  </a>
+                </div>
+                <div class="mdc-list-item mdc-drawer-item">
+                  <a class="mdc-drawer-link" href="/dashboard/gesclient">
+                    clients
+                  </a>
+                </div>
+                <div class="mdc-list-item mdc-drawer-item">
+                  <a class="mdc-drawer-link" href="/dashboard/edition">
+                    Famille d'article
+                  </a>
+                </div>
+              </nav>
+            </div>
+          </div>
+          <div class="mdc-list-item mdc-drawer-item">
+            <a class="mdc-drawer-link" href="/dashboard/EP/">
+              <i class="material-icons mdc-list-item__start-detail mdc-drawer-item-icon" aria-hidden="true">donut_small</i>
+              Statistiques
+            </a>
+          </div>  
+        </nav>
+      </div>
+      
+     
+      
+    </div>
+  </aside>
+    
+      
+      <!-- partial -->
+      <div class="main-wrapper mdc-drawer-app-content">
+        <!-- partial:partials/_navbar.html -->
+       

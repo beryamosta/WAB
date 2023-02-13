@@ -1,0 +1,279 @@
+{% extends 'base.html'%}
+{% load static %}
+{% block content %}
+
+<script src="{% static '/js/preloader.js'%}"></script>
+  <div class="body-wrapper">
+    <!-- partial:../../partials/_sidebar.html -->
+
+    <header class="mdc-top-app-bar">
+      <div class="mdc-top-app-bar__row">
+        <div class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
+          <button class="material-icons mdc-top-app-bar__navigation-icon mdc-icon-button sidebar-toggler">menu</button>
+          <span class="mdc-top-app-bar__title">Gestion de fournisseur</span>
+          <div class="mdc-text-field mdc-text-field--outlined mdc-text-field--with-leading-icon search-text-field d-none d-md-flex">
+            <i class="material-icons mdc-text-field__icon">search</i>
+            <input class="mdc-text-field__input" id="text-field-hero-input">
+            <div class="mdc-notched-outline">
+              <div class="mdc-notched-outline__leading"></div>
+              <div class="mdc-notched-outline__notch">
+                <label for="text-field-hero-input" class="mdc-floating-label">Search..</label>
+              </div>
+              <div class="mdc-notched-outline__trailing"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+  
+    
+      <div class="page-wrapper mdc-toolbar-fixed-adjust">
+        <main class="content-wrapper">
+          <!-- CONTENT ###########################################################################-->
+          <form method="post" id="subform" novalidate> 
+            {% csrf_token %}
+
+          <div class="mdc-layout-grid">
+            <div class="mdc-layout-grid__inner">
+              <div class="mdc-layout-grid__cell--span-12">
+                <div class="mdc-card">
+                  <div class="template-demo">
+                    <span style="color: red;" id="span_fourn"></span>
+                  <div style="float: right;">
+                    <button class="mdc-button mdc-button--raised" name="FOURN_ADD" id="FOURN_ADD" type="button" onclick="check_add_btn()">
+                      Ajouter
+                    </button>
+                    <button class="mdc-button mdc-button--outlined outlined-button--dark" style="background-color: brown; color: white;" type="button" id="FOURN_MOD" name="FOURN_MOD">
+                      Modifier
+                    </button>  
+                  </div>  
+                  <br/>
+                  <br/>   
+
+                <div class="mdc-layout-grid__inner">
+                  
+                  
+                    <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-3-desktop">
+                      <div class="mdc-text-field mdc-text-field--outlined">
+                        <input class="mdc-text-field__input" id="code_fourn_txt" name="code_fourn_txt" value="{{code_char_fournisseur}}" >
+                        <div class="mdc-notched-outline">
+                          <div class="mdc-notched-outline__leading"></div>
+                            <div class="mdc-notched-outline__notch">
+                              <label for="text-field-hero-input" class="mdc-floating-label">Code fournisseur</label>
+                            </div>
+                          <div class="mdc-notched-outline__trailing"></div>
+                        </div>
+                      </div>
+                    
+                      
+                    </div>
+                    <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-9-desktop"> 
+                      <div class="mdc-text-field mdc-text-field--outlined">
+                        <input class="mdc-text-field__input" id="nom_txt" name="nom_txt">
+                        <div class="mdc-notched-outline">
+                          <div class="mdc-notched-outline__leading"></div>
+                            <div class="mdc-notched-outline__notch">
+                              <label for="text-field-hero-input" class="mdc-floating-label">Nom/Raison social</label>
+                            </div>
+                          <div class="mdc-notched-outline__trailing"></div>
+                        </div>
+                      </div>
+                    </div> 
+
+                    <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-12-desktop"> 
+                      <div class="mdc-text-field mdc-text-field--outlined">
+                        <input class="mdc-text-field__input" id="adr_txt" name="adr_txt">
+                        <div class="mdc-notched-outline">
+                          <div class="mdc-notched-outline__leading"></div>
+                            <div class="mdc-notched-outline__notch">
+                              <label for="text-field-hero-input" class="mdc-floating-label">Adresse</label>
+                            </div>
+                          <div class="mdc-notched-outline__trailing"></div>
+                        </div>
+                      </div>
+                    </div> 
+                  
+                  
+                  
+
+                  <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-6-desktop">
+                    <div class="mdc-text-field mdc-text-field--outlined">
+                      <input class="mdc-text-field__input" id="tel_txt" name="tel_txt" >
+                      <div class="mdc-notched-outline">
+                        <div class="mdc-notched-outline__leading"></div>
+                        <div class="mdc-notched-outline__notch">
+                          <label for="text-field-hero-input" class="mdc-floating-label">N° TEL</label>
+                        </div>
+                        <div class="mdc-notched-outline__trailing"></div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-6-desktop">
+                    <div class="mdc-text-field mdc-text-field--outlined">
+                      <input class="mdc-text-field__input" id="mail_txt" name="mail_txt" type="email">
+                      <div class="mdc-notched-outline">
+                        <div class="mdc-notched-outline__leading"></div>
+                        <div class="mdc-notched-outline__notch">
+                          <label for="text-field-hero-input" class="mdc-floating-label">@ mail</label>
+                        </div>
+                        <div class="mdc-notched-outline__trailing"></div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-4-desktop">
+                    <div class="mdc-text-field mdc-text-field--outlined">
+                      <input class="mdc-text-field__input" id="rc_txt" name="rc_txt" >
+                      <div class="mdc-notched-outline">
+                        <div class="mdc-notched-outline__leading"></div>
+                        <div class="mdc-notched-outline__notch">
+                          <label for="text-field-hero-input" class="mdc-floating-label">RC</label>
+                        </div>
+                        <div class="mdc-notched-outline__trailing"></div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-4-desktop">
+                    <div class="mdc-text-field mdc-text-field--outlined">
+                      <input class="mdc-text-field__input" id="nif_txt" name="nif_txt" >
+                      <div class="mdc-notched-outline">
+                        <div class="mdc-notched-outline__leading"></div>
+                        <div class="mdc-notched-outline__notch">
+                          <label for="text-field-hero-input" class="mdc-floating-label">NIF</label>
+                        </div>
+                        <div class="mdc-notched-outline__trailing"></div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-4-desktop">
+                    <div class="mdc-text-field mdc-text-field--outlined">
+                      <input class="mdc-text-field__input" id="ai_txt" name="ai_txt" >
+                      <div class="mdc-notched-outline">
+                        <div class="mdc-notched-outline__leading"></div>
+                        <div class="mdc-notched-outline__notch">
+                          <label for="text-field-hero-input" class="mdc-floating-label">AI</label>
+                        </div>
+                        <div class="mdc-notched-outline__trailing"></div>
+                      </div>
+                    </div>
+                  </div>
+
+                  
+                </div>
+              </div>
+                </div>
+              </div>
+            </div> 
+          </div>  
+          </form>
+        <!-- TABLEAU D'AFFICHAGE-->
+          
+        <div class="mdc-layout-grid">
+          <div class="mdc-layout-grid__inner">
+           
+            <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-12">
+              <div class="mdc-card p-0">
+                <h6 class="card-title card-padding pb-0">Liste des fournisseur</h6>
+                <div class="table-responsive">
+                  <table class="table table-hoverable">
+                    <thead>
+                      <tr>
+                        <th class="text-left">Ref</th>
+                        <th class="text-left">Nom / Raison sociale</th>
+                        <th class="text-left">Tel</th>
+                        <th class="text-left">Email</th>
+                        
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {% if ArrayFournisseur %}
+                      {% for i in ArrayFournisseur %}
+                      
+                      <tr>
+                        <td name="reftableauarticle" class="text-left">{{i.REF}}</td>
+                        <td class="text-left">{{i.NOM}}</td>
+                        <td class="text-left">{{i.TEL}}</td>
+                        <td class="text-left">{{i.EMAIL}}</td>
+                        <td class="text-right" style="width: 30px;">
+                          <form action="/dashboard/deleteFournisseur/{{i.REF}}">
+                            <button class="mdc-button mdc-button--raised icon-button filled-button--secondary" name="btn_supp" value="{{i.REF}}">
+                              <i class="material-icons mdc-button__icon">delete</i>
+                            </button>
+                          </form>
+                        </td>
+                        <td class="text-left">
+                          <form action="/dashboard/updateFournisseur/{{i.REF}}">
+                            <button class="mdc-button mdc-button--raised icon-button filled-button--dark" name="btn_updt" value="{{i.REF}}">
+                              <i class="material-icons mdc-button__icon">edit</i>
+                            </button>
+                          </form>
+                        </td>
+                        
+                      </tr>
+                      {% endfor %}
+                      {% endif %}
+                      
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+            
+          </div>
+        </div>
+
+        </main>
+        <!-- partial:../../partials/_footer.html -->
+        
+        <!-- partial -->
+      </div>
+    </div>
+  </div>
+  <!-- plugins:js -->
+  <script src="{% static '/vendors/js/vendor.bundle.base.js'%}"></script>
+  <!-- endinject -->
+  <!-- Plugin js for this page-->
+  <script src="{% static '/vendors/chartjs/Chart.min.js'%}"></script>
+  <script src="{% static '/vendors/jvectormap/jquery-jvectormap.min.js'%}"></script>
+  <script src="{% static '/vendors/jvectormap/jquery-jvectormap-world-mill-en.js'%}"></script>
+  <!-- End plugin js for this page-->
+  <!-- inject:js -->
+  <script src="{% static '/js/material.js'%}"></script>
+  <script src="{% static '/js/misc.js'%}"></script>
+  <!-- endinject -->
+  <!-- Custom js for this page-->
+  <script src="{% static '/js/dashboard.js'%}"></script>
+  <!-- End custom js for this page-->
+  <!-- test validation form-->
+  <script>
+    function check_add_btn(){
+        var ref_fourn = document.getElementById("code_fourn_txt").value;
+        var fourn_nom = document.getElementById("nom_txt").value;
+        var fourn_adr = document.getElementById("adr_txt").value;
+        var fourn_tel = document.getElementById("tel_txt").value;
+        var fourn_mail = document.getElementById("mail_txt").value;
+        var fourn_rc = document.getElementById("rc_txt").value;
+        var fourn_nif = document.getElementById("nif_txt").value;
+        var fourn_ai = document.getElementById("ai_txt").value;
+        //var selectedValue = ddl.options[ddl.selectedIndex].value;
+        if (ref_fourn == "" || fourn_nom=="" || fourn_adr=="" || fourn_tel==""||fourn_mail == "" || fourn_rc=="" || fourn_nif=="" || fourn_ai=="" )
+        {
+          document.getElementById("span_fourn").innerHTML='champ obligatoire';
+          
+        }
+        
+        else{
+          //document.getElementById("span_add").innerHTML='VALIDE';
+         
+           document.getElementById("FOURN_ADD").type = "submit"
+        }
+  
+      }  
+    </script>
+  <!-- END test validation form-->
+</body>
+</html> 
+{%endblock%}

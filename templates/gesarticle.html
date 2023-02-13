@@ -1,0 +1,240 @@
+{% extends 'base.html'%}
+{% load static %}
+{% block content %}
+
+<script src="{% static '/js/preloader.js'%}"></script>
+
+  <div class="body-wrapper">
+    <!-- partial:../../partials/_sidebar.html -->
+
+    <header class="mdc-top-app-bar">
+      <div class="mdc-top-app-bar__row">
+        <div class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
+          <button class="material-icons mdc-top-app-bar__navigation-icon mdc-icon-button sidebar-toggler">menu</button>
+          <span class="mdc-top-app-bar__title">Gestion des articles</span>
+          <div class="mdc-text-field mdc-text-field--outlined mdc-text-field--with-leading-icon search-text-field d-none d-md-flex">
+            <i class="material-icons mdc-text-field__icon">search</i>
+            <input class="mdc-text-field__input" id="text-field-hero-input">
+            <div class="mdc-notched-outline">
+              <div class="mdc-notched-outline__leading"></div>
+              <div class="mdc-notched-outline__notch">
+                <label for="text-field-hero-input" class="mdc-floating-label">Search..</label>
+              </div>
+              <div class="mdc-notched-outline__trailing"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+  
+
+  
+    
+      <div class="page-wrapper mdc-toolbar-fixed-adjust">
+        <main class="content-wrapper">
+          <!-- CONTENT ###########################################################################-->
+          
+            
+            <form method="post" name="FORM_ARTICLE">
+              {% csrf_token %}
+          
+              <!-- partial:../../partials/_footer.html -->
+              <div class="mdc-layout-grid">
+                <div class="mdc-layout-grid__inner">
+                  <div class="mdc-layout-grid__cell--span-12">
+                    <div class="mdc-card">
+                      <div class="template-demo">
+                          <span style="color: red;" id="invalid_span"></span>
+                          <div style="float: right;">
+                            <button class="mdc-button mdc-button--raised " id="ART_ADD" name="ART_ADD" type="button" onclick="check_fields()">
+                              Ajouter
+                            </button>
+                            <button class="mdc-button mdc-button--outlined outlined-button--dark" style="background-color: brown; color: white;" type="button" id="ART_MOD" name="ART_MOD">
+                              Modifier
+                            </button>   
+                          </div>  
+                        <div>
+                          <br/>
+                          <br/>
+                        </div>
+                        <div class="mdc-layout-grid__inner">
+                            
+                            <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-12-desktop"> 
+                              <div class="mdc-text-field mdc-text-field--outlined">
+                                <input class="mdc-text-field__input" id="AR_DESIGNATION_TXT" name="AR_DESIGNATION_TXT">
+                                <div class="mdc-notched-outline">
+                                  <div class="mdc-notched-outline__leading"></div>
+                                    <div class="mdc-notched-outline__notch">
+                                      <label for="text-field-hero-input" class="mdc-floating-label">Designation</label>
+                                    </div>
+                                  <div class="mdc-notched-outline__trailing"></div>
+                                </div>
+                              </div>
+                            </div> 
+                          
+                            
+                          
+                          <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-12-desktop">  
+                                <div style="display:table;width: 50%; height: 35px; margin-right: 15px;">
+                                  <div class="dropdown" style="display:table-cell;vertical-align: middle; background-color: white;">          
+                                    <select class="dropdown-select" name="comboFamille" id="comboFamille" onkeyup="validateFourn" style="font-size: 16px; color: black;">
+                                      <option selected disabled value="" >Famille</option>
+                                      {% for Famille in comboFamille %}
+                                      <option value="{{Famille.FAM_DES}}" >{{Famille.FAM_DES}}</option>
+                                      {% endfor%}
+                                    </select>
+                                    <span id="span_fournisseur" style="color: red;"  ></span>
+                                  </div>
+                                </div>
+                          </div>    
+                              <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-4-desktop">
+                                <div class="mdc-text-field mdc-text-field--outlined">
+                                  <input class="mdc-text-field__input" id="AR_CODE_TXT" name="AR_CODE_TXT">
+                                  <div class="mdc-notched-outline">
+                                    <div class="mdc-notched-outline__leading"></div>
+                                    <div class="mdc-notched-outline__notch">
+                                      <label for="text-field-hero-input" class="mdc-floating-label">CODE D'ARTICLE</label>
+                                    </div>
+                                    <div class="mdc-notched-outline__trailing"></div>
+                                  </div>
+                                </div>
+                              </div>
+                          
+                          
+                            <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-4-desktop">
+                              <div class="mdc-text-field mdc-text-field--outlined">
+                                <input class="mdc-text-field__input" id="AR_QTY_TXT" name="AR_QTY_TXT" type="number" >
+                                <div class="mdc-notched-outline">
+                                  <div class="mdc-notched-outline__leading"></div>
+                                  <div class="mdc-notched-outline__notch">
+                                    <label for="text-field-hero-input" class="mdc-floating-label">Quantité</label>
+                                  </div>
+                                  <div class="mdc-notched-outline__trailing"></div>
+                                </div>
+                              </div>
+                            </div>
+                            
+                            <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-4-desktop">
+                              <div class="mdc-text-field mdc-text-field--outlined">
+                                <input class="mdc-text-field__input" id="AR_PU_TXT" name="AR_PU_TXT" type="number">
+                                <div class="mdc-notched-outline">
+                                  <div class="mdc-notched-outline__leading"></div>
+                                  <div class="mdc-notched-outline__notch">
+                                    <label for="text-field-hero-input" class="mdc-floating-label">Prix Unitaire</label>
+                                  </div>
+                                  <div class="mdc-notched-outline__trailing"></div>
+                                </div>
+                              </div>
+                            </div>
+                          
+                            
+                        </div>  
+
+                          
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- partial -->
+            
+          </form>
+        </div>
+          <!--##########################  TABLE ###################################-->
+
+          <div class="mdc-layout-grid">
+            <div class="mdc-layout-grid__inner">
+             
+              <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-12">
+                <div class="mdc-card p-0">
+                  <h6 class="card-title card-padding pb-0">Liste des articles</h6>
+                  <div class="table-responsive">
+                    <table class="table table-hoverable">
+                      <thead>
+                        <tr>
+                          <th class="text-left">ID</th>
+                          <th class="text-left">Désignation</th>
+                          <th class="text-left">Famille</th>
+                          <th class="text-left">P U</th>
+                          <th class="text-left">Stock Réel</th>
+                          <th class="text-left">Code Produit</th>
+                          <th class="text-left">Action</th>
+                          
+                          
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% if ArrayArticle %}
+                        {% for i in ArrayArticle %}
+                        
+                        <tr>
+                          <td name="reftableauarticle" class="text-left">{{i.REF}}</td>
+                          <td class="text-left">{{i.DESIGNATION}}</td>
+                          <td class="text-left">{{i.FAMILLE}}</td>
+                          <td class="text-left">{{i.PU}}</td>
+                          <td class="text-left">{{i.STOCK_REEL}}</td>
+                          <td class="text-left">{{i.CODE}}</td> 
+                          <td class="text-left">
+                            <form action="/dashboard/deleteArticle/{{i.REF}}">
+                              <button class="mdc-button mdc-button--raised icon-button filled-button--secondary" name="btn_supp" value="{{i.REF}}">
+                                <i class="material-icons mdc-button__icon">delete</i>
+                              </button>
+                            </form>
+                          </td>
+                          
+                        </tr>
+                        {% endfor %}
+                        {% endif %}
+                        
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+              
+            </div>
+          </div>
+
+
+        </main>
+      </div>
+  </div>
+  <!-- plugins:js -->
+  <script src="{% static '/vendors/js/vendor.bundle.base.js'%}"></script>
+  <!-- endinject -->
+  <!-- Plugin js for this page-->
+  <script src="{% static '/vendors/chartjs/Chart.min.js'%}"></script>
+  <script src="{% static '/vendors/jvectormap/jquery-jvectormap.min.js'%}"></script>
+  <script src="{% static '/vendors/jvectormap/jquery-jvectormap-world-mill-en.js'%}"></script>
+  <!-- End plugin js for this page-->
+  <!-- inject:js -->
+  <script src="{% static '/js/material.js'%}"></script>
+  <script src="{% static '/js/misc.js'%}"></script>
+  <!-- endinject -->
+  <!-- Custom js for this page-->
+  <script src="{% static '/js/dashboard.js'%}"></script>
+  <!-- End custom js for this page-->
+
+  <!-- check fields-->
+  <script>
+    function check_fields(){
+      var desi = document.getElementById("AR_DESIGNATION_TXT").value;
+      var qty = document.getElementById("AR_QTY_TXT").value;
+      var pu = document.getElementById("AR_PU_TXT").value;
+      var ddl = document.getElementById("comboFamille");
+      var selectedValue = ddl.options[ddl.selectedIndex].value;
+      if (selectedValue == "" || desi=="" || qty == "" || pu=="")
+      {
+        document.getElementById("invalid_span").innerHTML='Veuillez remplir touts les champs';
+        //("Please select a client type");
+      }else{
+        document.getElementById("ART_ADD").type = "submit"
+      }
+
+    }
+  </script>
+  <!--  END check fields-->
+</body>
+</html> 
+{%endblock%}

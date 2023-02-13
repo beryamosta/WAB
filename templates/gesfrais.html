@@ -1,0 +1,271 @@
+{% extends 'base.html'%}
+{% load static %}
+{% block content %}
+
+
+
+<script src="{% static '/js/preloader.js'%}"></script>
+  <div class="body-wrapper">
+    <!-- partial:../../partials/_sidebar.html -->
+    <header class="mdc-top-app-bar">
+      <div class="mdc-top-app-bar__row">
+        <div class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
+          <button class="material-icons mdc-top-app-bar__navigation-icon mdc-icon-button sidebar-toggler">menu</button>
+          <span class="mdc-top-app-bar__title">Gestion de frais</span>
+          <div class="mdc-text-field mdc-text-field--outlined mdc-text-field--with-leading-icon search-text-field d-none d-md-flex">
+            <i class="material-icons mdc-text-field__icon">search</i>
+            <input class="mdc-text-field__input" id="text-field-hero-input">
+            <div class="mdc-notched-outline">
+              <div class="mdc-notched-outline__leading"></div>
+              <div class="mdc-notched-outline__notch">
+                <label for="text-field-hero-input" class="mdc-floating-label">Search..</label>
+              </div>
+              <div class="mdc-notched-outline__trailing"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+  
+      <div class="page-wrapper mdc-toolbar-fixed-adjust">
+        <main class="content-wrapper">
+          <!-- CONTENT ########################################################################### -->
+          <form method="post" >
+            {% csrf_token %}
+            <div class="mdc-layout-grid">
+              <div class="mdc-layout-grid__inner">
+                <div class="mdc-layout-grid__cell--span-12">
+                  <div class="mdc-card">
+                    <div class="template-demo">
+                      <div class="mdc-form-field">
+                        
+                        <span id="span_frais" style="color: red;"></span>  
+                      </div>
+
+                        <div style="float: right;">
+                          
+                          <button class="mdc-button mdc-button--raised" id="FR_ADD_BTN" name="add" onclick="focus();check_type();check_add_btn();" type="button">
+                            Ajouter
+                          </button>
+                          <button class="mdc-button mdc-button--raised filled-button--secondary" name="update" title="en cours de developpement" type="button" style="background-color: brown;">
+                            Modifier
+                          </button>   
+                        </div>  
+                        <br>
+                        <br>
+                        <br>
+                        
+                        
+                      
+                        <div class="mdc-layout-grid__inner">
+                      
+
+                          <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-6-desktop">
+                            <div class="mdc-text-field mdc-text-field--outlined">
+                              <input class="mdc-text-field__input" name="id_field" value="{{refidencode}}" >
+                              
+                              <div class="mdc-notched-outline">
+                                <div class="mdc-notched-outline__leading"></div>
+                                <div class="mdc-notched-outline__notch">
+                                  <label for="text-field-hero-input" class="mdc-floating-label">REF</label>
+                                </div>
+                                <div class="mdc-notched-outline__trailing"></div>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-6-desktop">
+                            <div class="mdc-text-field mdc-text-field--outlined">
+                              <input class="mdc-text-field__input" id="FRAIS_DATE" type="date" value="{{field_fr_date}}" name="date_field">
+                              <div class="mdc-notched-outline">
+                                <div class="mdc-notched-outline__leading"></div>
+                                <div class="mdc-notched-outline__notch">
+                                  <label for="text-field-hero-input" class="mdc-floating-label">Date</label>
+                                </div>
+                                <div class="mdc-notched-outline__trailing"></div>
+                              </div>
+                            </div>
+                          </div>
+                          
+                          
+
+                          <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-6-desktop">
+                            <div class="mdc-text-field mdc-text-field--outlined">
+                              <input class="mdc-text-field__input" id="FR_DES_TXT" value="{{field_fr_designation}}" name="des_field">
+                              <div class="mdc-notched-outline">
+                                <div class="mdc-notched-outline__leading"></div>
+                                <div class="mdc-notched-outline__notch">
+                                  <label for="text-field-hero-input" class="mdc-floating-label">Designation</label>
+                                </div>
+                                <div class="mdc-notched-outline__trailing"></div>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-6-desktop">
+                            <div class="mdc-text-field mdc-text-field--outlined">
+                              <input class="mdc-text-field__input" id="montant_field" value="{{field_fr_montant}}"name="montant_field" type="number" >
+                              <div class="mdc-notched-outline">
+                                <div class="mdc-notched-outline__leading"></div>
+                                <div class="mdc-notched-outline__notch">
+                                  <label for="text-field-hero-input" class="mdc-floating-label">Montant</label>
+                                </div>
+                                <div class="mdc-notched-outline__trailing"></div>
+                              </div>
+                            </div>
+                          </div>
+                          <div style="display:table">
+                            <div class="dropdown" >
+                                  <select class="dropdown-select" name="type_field_select" id="type_field_select">
+                                    <option selected disabled value="">choose</option>
+                                    {% for TypeFrais in typefrais %}
+                                    <option value="{{TypeFrais.FRT_ID}}" >{{TypeFrais.FRT_NAME}}</option>
+                                    {% endfor%}
+                                  </select>
+                            </div>
+                                
+                          </div>
+                        </div>  
+                       
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>   
+
+          <div class="mdc-layout-grid">
+            <div class="mdc-layout-grid__inner">
+             
+              <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-12">
+                <div class="mdc-card p-0">
+                  <h6 class="card-title card-padding pb-0">Liste des dépences</h6>
+                  <div class="table-responsive" >
+                    <table class="table table-hoverable" id="listedepense">
+                      <thead>
+                        <tr>
+                          <th class="text-left">Date</th>
+                          <th class="text-left">Ref</th>
+                          <th class="text-left">Désignation</th>
+                          <th class="text-left">Type</th>
+                          <th class="text-left">Montant</th>
+                          <th class="text-left">Action</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% for Frais in frais %}
+                        <tr>
+                          <td class="text-left">{{Frais.FR_DATE}}</td>
+                          <td class="text-left">{{Frais.FR_CODE_REF}}</td>
+                          <td class="text-left">{{Frais.FR_DESIGNATION}}</td>
+                          <td class="text-left">{{Frais.FR_TYPE}}</td>
+                          <td class="text-left">{{Frais.FR_MONTANT}}</td>
+                          <td class="text-left">
+                            <form action="/dashboard/deleteFrais/{{Frais.FR_ID}}">
+                              <button class="mdc-button mdc-button--raised icon-button filled-button--secondary" name="btn_supp">
+                                <i class="material-icons mdc-button__icon">delete</i>
+                              </button>
+                            </form>
+                          </td>
+                        </tr>
+                        {% endfor%}
+                        
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+              
+            </div>
+          </div>
+        </main>
+        <!-- partial:../../partials/_footer.html -->
+        
+        <!-- partial -->
+      </div>
+    </div>
+  </div>
+  <!-- plugins:js -->
+  <script src="{% static '/vendors/js/vendor.bundle.base.js'%}"></script>
+  <!-- endinject -->
+  <!-- Plugin js for this page-->
+  <script src="{% static '/vendors/chartjs/Chart.min.js'%}"></script>
+  <script src="{% static '/vendors/jvectormap/jquery-jvectormap.min.js'%}"></script>
+  <script src="{% static '/vendors/jvectormap/jquery-jvectormap-world-mill-en.js'%}"></script>
+  <!-- End plugin js for this page-->
+  <!-- inject:js -->
+  <script src="{% static '/js/material.js'%}"></script>
+  <script src="{% static '/js/misc.js'%}"></script>
+  <!-- endinject -->
+  <!-- Custom js for this page-->
+  <script src="{% static '/js/dashboard.js'%}"></script>
+  <!-- End custom js for this page-->
+  <script>
+    let table = new DataTable('#listedepense', {
+    // options
+});
+  </script>
+<!-- DATE DEFAULT TODAY-->
+  <script>
+  document.getElementById('FRAIS_DATE').value = new Date().toISOString().substring(0, 10);
+  </script>
+  <!-- END DATE DEFAULT TODAY-->
+
+  <script>
+    function focus(){
+      document.getElementById("FR_DES_TXT").focus();
+    }
+  </script>
+  <script>
+    $(document).ready(function() {
+    $('#listedepense').DataTable({
+        "columns": [
+            { "data": "Date" },
+            { "data": "Ref" },
+            { "data": "Désignation" },
+            { "data": "Type" },
+            { "data": "Montant" },
+            { "data": "Action" }
+          ]
+    });
+    });
+  </script>
+  
+  <!-- CHECK TYPE FRAIS SELECT-->
+  <script>
+    function check_type(){
+      var ddl_montant = document.getElementById("montant_field").value;var ddl_des = document.getElementById("FR_DES_TXT").value;
+      var ddl = document.getElementById("type_field_select");
+      var selectedValue = ddl.options[ddl.selectedIndex].value;
+      if (selectedValue == ""||ddl_montant == "" || ddl_des=="")
+      {
+        document.getElementById("span_frais").innerHTML='Tout les champs sont obligatoires';
+      }
+      else{
+        document.getElementById("FR_ADD_BTN").type = "submit"
+      }
+
+    }
+  </script>
+   <script>
+    function check_add_btn(){
+        
+        //var selectedValue = ddl.options[ddl.selectedIndex].value;
+        if (ddl_montant == " " || ddl_des=="" )
+        {
+          document.getElementById("span_frais").innerHTML='champ obligatoire';
+          //("Please select a client type");
+        }
+        else{
+          //document.getElementById("span_add").innerHTML='VALIDE';
+         
+           document.getElementById("FR_ADD_BTN").type = "submit"
+        }
+  
+      }  
+    </script>
+  <!-- END CHECK TYPE FRAIS SELECT-->
+</body>
+</html> 
+{%endblock%}
